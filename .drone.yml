@@ -1,0 +1,32 @@
+kind: pipeline
+type: docker
+name: traefik-deploy
+
+trigger:
+  branch:
+    - main
+  event:
+    - push
+    - tag
+
+steps:
+  - name: deploy
+    image: docker/compose:latest
+    volumes:
+      - name: docker-sock
+        path: /var/run/docker.sock
+    commands:
+      # - touch acme.json
+      # - chmod 600 acme.json
+
+      - docker compose down || true
+      - docker compose up -d
+
+      # - docker compose ps
+      # - sleep 10
+      # - docker logs traefik --tail 20
+
+volumes:
+  - name: docker-sock
+    host:
+      path: /var/run/docker.sock
