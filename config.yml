@@ -1,0 +1,16 @@
+http:
+  routers:
+    drone-service:
+      rule: "Host(`drone.bobparsons.dev`)"
+      service: drone-service
+      entryPoints:
+        - http
+        - https
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    drone-service:
+      loadBalancer:
+        servers:
+          - url: "http://drone:80"
