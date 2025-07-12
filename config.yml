@@ -16,6 +16,16 @@ http:
         - https
       tls:
         certResolver: letsencrypt
+    traefik-dashboard:
+      rule: "Host(`traefik.bobparsons.dev`)"
+      service: api@internal
+      entryPoints:
+        - http
+        - https
+      tls:
+        certResolver: letsencrypt
+      middlewares:
+        - traefik-auth
   services:
     drone-service:
       loadBalancer:
@@ -25,3 +35,9 @@ http:
       loadBalancer:
         servers:
           - url: "http://bp:3076"
+  middlewares:
+    traefik-auth:
+      basicAuth:
+        users:
+          # Replace with htpasswd generated hash
+          - "admin:REPLACE_WITH_HASH"
