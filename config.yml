@@ -8,9 +8,20 @@ http:
         - https
       tls:
         certResolver: letsencrypt
-
+    bobparsons:
+      rule: "Host(`bobparsons.dev`) || Host(`www.bobparsons.dev`)"
+      service: website-service
+      entryPoints:
+        - http
+        - https
+      tls:
+        certResolver: letsencrypt
   services:
     drone-service:
       loadBalancer:
         servers:
           - url: "http://drone:80"
+    bobparsons:
+      loadBalancer:
+        servers:
+          - url: "http://bp:3076"
