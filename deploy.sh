@@ -24,6 +24,16 @@ if [ ! -f "acme.json" ]; then
     chmod 600 acme.json
 fi
 
+# Load authentication setup from local script
+if [ -f "./auth-setup.sh" ]; then
+    echo "🔐 Loading authentication from local script..."
+    source ./auth-setup.sh
+else
+    echo "❌ auth-setup.sh not found! Please create it locally."
+    echo "   It should export TRAEFIK_AUTH_HASH with the admin credentials."
+    exit 1
+fi
+
 # Ensure external network exists
 echo "🌐 Ensuring traefik network exists..."
 docker network create traefik 2>/dev/null || echo "Network already exists"

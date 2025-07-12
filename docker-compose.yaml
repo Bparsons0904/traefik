@@ -10,6 +10,7 @@ services:
     volumes:
       - ./traefik.yml:/traefik.yml:ro
       - ./acme.json:/acme.json
+      - ./users.htpasswd:/users.htpasswd:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - traefik
@@ -21,7 +22,7 @@ services:
       - "traefik.http.routers.traefik-dashboard.tls.certresolver=letsencrypt"
       - "traefik.http.routers.traefik-dashboard.service=api@internal"
       - "traefik.http.routers.traefik-dashboard.middlewares=traefik-auth"
-      - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_AUTH_HASH}"
+      - "traefik.http.middlewares.traefik-auth.basicauth.usersfile=/users.htpasswd"
     environment:
       - TRAEFIK_AUTH_HASH=${TRAEFIK_AUTH_HASH}
 

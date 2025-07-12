@@ -1,3 +1,5 @@
 config.yml
 .env
 acme.json
+auth-setup.sh
+users.htpasswd
