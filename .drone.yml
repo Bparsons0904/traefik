@@ -13,6 +13,8 @@ steps:
       # Ensure acme.json exists with correct permissions
       # - touch acme.json
       # - chmod 600 acme.json
+      - docker stop traefik || true
+      - docker rm traefik || true
 
       # Deploy Traefik
       - docker-compose down || true
