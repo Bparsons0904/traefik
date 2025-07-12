@@ -9,10 +9,21 @@ services:
       - "8081:8080"
     volumes:
       - ./traefik.yml:/traefik.yml:ro
-      - ./config.yml:/config.yml:ro
       - ./acme.json:/acme.json
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.bobparsons.dev`)"
+      - "traefik.http.routers.traefik-dashboard.entrypoints=http,https"
+      - "traefik.http.routers.traefik-dashboard.tls=true"
+      - "traefik.http.routers.traefik-dashboard.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.traefik-dashboard.service=api@internal"
+      - "traefik.http.routers.traefik-dashboard.middlewares=traefik-auth"
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_AUTH_HASH}"
+    environment:
+      - TRAEFIK_AUTH_HASH=${TRAEFIK_AUTH_HASH}
 
 networks:
   traefik:

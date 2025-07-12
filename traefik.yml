@@ -22,5 +22,7 @@ certificatesResolvers:
         entryPoint: http
 
 providers:
-  file:
-    filename: /config.yml
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    network: traefik

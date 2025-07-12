@@ -1,43 +1,9 @@
-http:
-  routers:
-    drone-service:
-      rule: "Host(`drone.bobparsons.dev`)"
-      service: drone-service
-      entryPoints:
-        - http
-        - https
-      tls:
-        certResolver: letsencrypt
-    website:
-      rule: "Host(`bobparsons.dev`) || Host(`www.bobparsons.dev`)"
-      service: website-service
-      entryPoints:
-        - http
-        - https
-      tls:
-        certResolver: letsencrypt
-    traefik-dashboard:
-      rule: "Host(`traefik.bobparsons.dev`)"
-      service: api@internal
-      entryPoints:
-        - http
-        - https
-      tls:
-        certResolver: letsencrypt
-      middlewares:
-        - traefik-auth
-  services:
-    drone-service:
-      loadBalancer:
-        servers:
-          - url: "http://drone:80"
-    website-service:
-      loadBalancer:
-        servers:
-          - url: "http://bp:3076"
-  middlewares:
-    traefik-auth:
-      basicAuth:
-        users:
-          # Replace with htpasswd generated hash
-          - "admin:REPLACE_WITH_HASH"
+# This file is no longer used - migrated to Docker auto-discovery
+# Traefik now uses Docker labels for service discovery
+# See docker-compose.yaml files for service configurations
+# 
+# Backup of original config saved as config.yml.backup
+
+# Static file configuration has been replaced with:
+# - Docker provider in traefik.yml
+# - Service labels in individual docker-compose.yml files
