@@ -4,7 +4,7 @@ name: traefik-deploy
 
 steps:
   - name: deploy
-    image: docker:dind
+    image: docker:latest
     environment:
       DOCKER_HOST: unix:///var/run/docker.sock
     commands:
