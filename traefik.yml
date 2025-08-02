@@ -1,6 +1,6 @@
 api:
   dashboard: true
-  insecure: false
+  insecure: true
 
 entryPoints:
   http:
@@ -26,3 +26,9 @@ providers:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
     network: traefik
+
+metrics:
+  prometheus:
+    addEntryPointsLabels: true
+    addServicesLabels: true
+    addRoutersLabels: true
