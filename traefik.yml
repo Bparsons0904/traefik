@@ -1,6 +1,18 @@
 api:
   dashboard: true
-  insecure: true
+  insecure: false
+
+log:
+  level: INFO
+  format: json
+
+accessLog:
+  format: json
+  filePath: "/var/log/traefik/access.log"
+  bufferingSize: 100
+  filters:
+    statusCodes:
+      - "200-599"
 
 entryPoints:
   http:
@@ -20,12 +32,50 @@ certificatesResolvers:
       storage: acme.json
       httpChallenge:
         entryPoint: http
+      # Use external DNS resolvers for ACME challenges to avoid local DNS conflicts
+  #     caServer: https://acme-v02.api.letsencrypt.org/directory
 
 providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
     network: traefik
+
+http:
+  middlewares:
+    # Global rate limiting - prevents abuse and DoS
+    rate-limit:
+      rateLimit:
+        average: 100
+        burst: 50
+        period: 1s
+
+    # Stricter rate limiting for sensitive endpoints
+    rate-limit-strict:
+      rateLimit:
+        average: 10
+        burst: 5
+        period: 1s
+
+    # Security headers - essential for modern web security
+    security-headers:
+      headers:
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 31536000
+        customFrameOptionsValue: "SAMEORIGIN"
+        customResponseHeaders:
+          X-Robots-Tag: "none,noarchive,nosnippet,notranslate,noimageindex"
+          server: ""
+          X-Content-Type-Options: "nosniff"
+          X-Frame-Options: "SAMEORIGIN"
+
+    # Compression - reduces bandwidth and improves performance
+    compress:
+      compress: {}
 
 metrics:
   prometheus:
