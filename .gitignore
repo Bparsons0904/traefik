@@ -4,3 +4,4 @@ acme.json
 auth-setup.sh
 users.htpasswd
 *.backup
+logs/access.log
