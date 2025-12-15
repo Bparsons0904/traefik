@@ -3,3 +3,4 @@ config.yml
 acme.json
 auth-setup.sh
 users.htpasswd
+*.backup
