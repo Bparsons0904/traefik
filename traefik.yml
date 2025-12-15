@@ -40,6 +40,9 @@ providers:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
     network: traefik
+  file:
+    filename: /traefik.yml
+    watch: true
 
 http:
   middlewares:
